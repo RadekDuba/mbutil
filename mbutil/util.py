@@ -184,6 +184,8 @@ def disk_to_mbtiles(directory_path, mbtiles_file, **kwargs):
         metadata = json.load(open(os.path.join(directory_path, 'metadata.json'), 'r'))
         image_format = kwargs.get('format')
         for name, value in metadata.items():
+            if isinstance(value, list):
+                value = ','.join(map(str, value))  # Convert list to a comma-separated string
             cur.execute('insert into metadata (name, value) values (?, ?)',
                 (name, value))
         if not silent: 
